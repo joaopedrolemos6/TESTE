@@ -6,4 +6,12 @@ public class Pedido {
         this.pessoa = pessoa;
         this.valor = valor;
     }
+
+    public Pessoa getPessoa() {
+        return pessoa;
+    }
+
+    public double getValor() {
+        return valor;
+    }
 }
