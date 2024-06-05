@@ -3,8 +3,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PessoaDAO {
-    private static List<Pessoa> pessoas = new ArrayList<>();
-
     public void cadastrarPessoa(Pessoa pessoa) {
         Connection conexao = Conexao.GeraConexao();
         if (conexao != null) {
@@ -39,6 +37,7 @@ public class PessoaDAO {
                 stmt.close();
             } catch (SQLException e) {
                 System.out.println("Erro ao cadastrar pessoa: " + e.getMessage());
+                e.printStackTrace();
             } finally {
                 try {
                     conexao.close();
@@ -70,6 +69,7 @@ public class PessoaDAO {
                 stmt.close();
             } catch (SQLException e) {
                 System.out.println("Erro ao encontrar pessoa: " + e.getMessage());
+                e.printStackTrace();
             } finally {
                 try {
                     conexao.close();
@@ -110,6 +110,7 @@ public class PessoaDAO {
                 stmt.close();
             } catch (SQLException e) {
                 System.out.println("Erro ao listar pessoas: " + e.getMessage());
+                e.printStackTrace();
             } finally {
                 try {
                     conexao.close();

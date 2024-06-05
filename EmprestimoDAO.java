@@ -15,6 +15,7 @@ public class EmprestimoDAO {
                 stmt.close();
             } catch (SQLException e) {
                 System.out.println("Erro ao fazer empréstimo: " + e.getMessage());
+                e.printStackTrace();
             } finally {
                 try {
                     conexao.close();
@@ -27,25 +28,29 @@ public class EmprestimoDAO {
 
     private int getPessoaId(String cpf, Connection conexao) throws SQLException {
         String sql = "SELECT id FROM Pessoas WHERE cpf = ?";
-        PreparedStatement stmt = conexao.prepareStatement(sql);
-        stmt.setString(1, cpf);
-        ResultSet rs = stmt.executeQuery();
-        if (rs.next()) {
-            return rs.getInt("id");
-        } else {
-            throw new SQLException("Pessoa não encontrada");
+        try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
+            stmt.setString(1, cpf);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("id");
+                } else {
+                    throw new SQLException("Pessoa não encontrada");
+                }
+            }
         }
     }
 
     private int getLivroId(String titulo, Connection conexao) throws SQLException {
         String sql = "SELECT id FROM Livros WHERE titulo = ?";
-        PreparedStatement stmt = conexao.prepareStatement(sql);
-        stmt.setString(1, titulo);
-        ResultSet rs = stmt.executeQuery();
-        if (rs.next()) {
-            return rs.getInt("id");
-        } else {
-            throw new SQLException("Livro não encontrado");
+        try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
+            stmt.setString(1, titulo);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("id");
+                } else {
+                    throw new SQLException("Livro não encontrado");
+                }
+            }
         }
     }
 
@@ -60,14 +65,15 @@ public class EmprestimoDAO {
                 PreparedStatement stmt = conexao.prepareStatement(sql);
                 ResultSet rs = stmt.executeQuery();
                 while (rs.next()) {
-                    Pessoa pessoa = new Pessoa(rs.getString("nome"), ""); // CPF não é necessário aqui
-                    Livro livro = new Livro(rs.getString("titulo"), ""); // Autor não é necessário aqui
+                    Pessoa pessoa = new Pessoa(rs.getString("nome"), "");
+                    Livro livro = new Livro(rs.getString("titulo"), "");
                     Emprestimo emprestimo = new Emprestimo(pessoa, livro);
                     emprestimos.add(emprestimo);
                 }
                 stmt.close();
             } catch (SQLException e) {
                 System.out.println("Erro ao listar empréstimos: " + e.getMessage());
+                e.printStackTrace();
             } finally {
                 try {
                     conexao.close();

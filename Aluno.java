@@ -1,4 +1,4 @@
-class Aluno extends Pessoa {
+public class Aluno extends Pessoa {
     private double notaProva1;
     private double notaProva2;
 
@@ -23,7 +23,7 @@ class Aluno extends Pessoa {
     }
 
     public boolean passouDeAno() {
-        return (notaProva1 + notaProva2) / 2 >= 6;
+        return (notaProva1 + notaProva2) / 2 >= 7;
     }
 
     @Override
